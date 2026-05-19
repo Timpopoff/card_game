@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Симулятор экономики ККИ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎴 Симулятор экономики ККИ</h1>
+        <p class="subtitle">Карточная игра (Marvel Snap-механика)</p>
+
+        <!-- Панель настроек -->
+        <div class="settings-panel">
+            <h2>⚙️ Настройки симуляции</h2>
+            
+            <div class="settings-grid">
+                <!-- Основные параметры -->
+                <div class="settings-section">
+                    <h3>📊 Параметры игры</h3>
+                    
+                    <div class="setting-item">
+                        <label for="gamesPerDay">Игр в день:</label>
+                        <input type="number" id="gamesPerDay" value="3.5" min="1" max="20" step="0.5">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="winRate">% побед:</label>
+                        <input type="number" id="winRate" value="50" min="0" max="100" step="1">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="drawRate">% ничьих:</label>
+                        <input type="number" id="drawRate" value="5" min="0" max="100" step="1">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="simulationDays">Дней симуляции:</label>
+                        <input type="number" id="simulationDays" value="30" min="7" max="90" step="1">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="simulationsCount">Количество запусков:</label>
+                        <input type="number" id="simulationsCount" value="1" min="1" max="1000" step="1">
+                    </div>
+                </div>
+
+                <!-- Награды -->
+                <div class="settings-section">
+                    <h3>🎁 Награды за матч</h3>
+                    
+                    <div class="setting-item">
+                        <label>Победа:</label>
+                        <div class="reward-inputs">
+                            <input type="number" id="winCards" value="2" min="0" max="10" placeholder="Карты" title="Карты">
+                            <span>карты +</span>
+                            <input type="number" id="winCoins" value="100" min="0" max="1000" placeholder="Монеты" title="Монеты">
+                            <span>монет</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label>Ничья:</label>
+                        <div class="reward-inputs">
+                            <input type="number" id="drawCards" value="1" min="0" max="10" placeholder="Карты" title="Карты">
+                            <span>карты +</span>
+                            <input type="number" id="drawCoins" value="50" min="0" max="1000" placeholder="Монеты" title="Монеты">
+                            <span>монет</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label>Поражение:</label>
+                        <div class="reward-inputs">
+                            <input type="number" id="lossCards" value="1" min="0" max="10" placeholder="Карты" title="Карты">
+                            <span>карты +</span>
+                            <input type="number" id="lossCoins" value="25" min="0" max="1000" placeholder="Монеты" title="Монеты">
+                            <span>монет</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вероятности карт -->
+                <div class="settings-section">
+                    <h3>🎲 Вероятности выпадения карт (за победу)</h3>
+                    
+                    <div class="setting-item">
+                        <label for="basicProb">Базовая карта (%):</label>
+                        <input type="number" id="basicProb" value="70" min="0" max="100" step="1">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="strongProb">Сильная карта (%):</label>
+                        <input type="number" id="strongProb" value="20" min="0" max="100" step="1">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="epicProb">Эпическая карта (%):</label>
+                        <input type="number" id="epicProb" value="7" min="0" max="100" step="1">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="rareProb">Редкая карта (%):</label>
+                        <input type="number" id="rareProb" value="3" min="0" max="100" step="1">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="totalUniqueCards">Всего уникальных карт:</label>
+                        <input type="number" id="totalUniqueCards" value="30" min="10" max="100" step="1">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="maxCopies">Макс. копий одной карты:</label>
+                        <input type="number" id="maxCopies" value="4" min="1" max="10" step="1">
+                    </div>
+                </div>
+
+                <!-- Цены в магазине -->
+                <div class="settings-section">
+                    <h3>🏪 Цены в магазине (монет)</h3>
+                    
+                    <div class="setting-item">
+                        <label for="priceBasic">Базовая карта:</label>
+                        <input type="number" id="priceBasic" value="175" min="0" max="5000" step="25">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="priceStrong">Сильная карта:</label>
+                        <input type="number" id="priceStrong" value="500" min="0" max="5000" step="50">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="priceEpic">Эпическая карта:</label>
+                        <input type="number" id="priceEpic" value="850" min="0" max="10000" step="50">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="priceRare">Редкая карта:</label>
+                        <input type="number" id="priceRare" value="1200" min="0" max="10000" step="100">
+                    </div>
+                </div>
+
+                <!-- Ежедневный бонус -->
+                <div class="settings-section">
+                    <h3>📅 Ежедневный бонус (прогрессивная система)</h3>
+                    
+                    <div class="setting-item checkbox">
+                        <input type="checkbox" id="enableDailyBonus" checked>
+                        <label for="enableDailyBonus">Включить ежедневный бонус</label>
+                    </div>
+                    
+                    <div class="daily-bonus-info">
+                        <p><strong>7-дневный цикл:</strong></p>
+                        <ul>
+                            <li>Дни 1-3: +1 базовая карта</li>
+                            <li>Дни 4-6: +1 сильная карта</li>
+                            <li>День 7: +1 редкая карта</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button id="runSimBtn" class="btn btn-primary">🚀 Запустить симуляцию</button>
+                <button id="runMultipleBtn" class="btn btn-secondary">📈 Запустить 100 раз (статистика)</button>
+                <button id="resetBtn" class="btn btn-reset">🔄 Сбросить настройки</button>
+            </div>
+        </div>
+
+        <!-- Результаты -->
+        <div class="results-panel" id="resultsPanel" style="display: none;">
+            <h2>📊 Результаты симуляции</h2>
+            
+            <!-- Ключевые метрики -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value" id="daysToCollect">-</div>
+                    <div class="metric-label">Дней до 30 карт</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value" id="totalCardsObtained">-</div>
+                    <div class="metric-label">Всего карт получено</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value" id="cardsFromWins">-</div>
+                    <div class="metric-label">Карт за победы</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value" id="cardsBought">-</div>
+                    <div class="metric-label">Карт куплено</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value" id="coinsEarned">-</div>
+                    <div class="metric-label">Монет заработано</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value" id="coinsSpent">-</div>
+                    <div class="metric-label">Монет потрачено</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value" id="coinsBalance">-</div>
+                    <div class="metric-label">Баланс на конец</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-value" id="duplicateRate">-</div>
+                    <div class="metric-label">% дубликатов</div>
+                </div>
+            </div>
+
+            <!-- Графики -->
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>📈 Прогресс коллекции по дням</h3>
+                    <canvas id="collectionChart"></canvas>
+                </div>
+                
+                <div class="chart-box">
+                    <h3>💰 Баланс монет по дням</h3>
+                    <canvas id="coinsChart"></canvas>
+                </div>
+                
+                <div class="chart-box">
+                    <h3>🎲 Распределение по редкостям</h3>
+                    <canvas id="rarityChart"></canvas>
+                </div>
+                
+                <div class="chart-box">
+                    <h3>📊 Источники карт</h3>
+                    <canvas id="sourcesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Детальная статистика -->
+            <div class="detailed-stats">
+                <h3>📋 Детальная статистика</h3>
+                <table id="statsTable">
+                    <thead>
+                        <tr>
+                            <th>Метрика</th>
+                            <th>Значение</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Всего игр за симуляцию</td>
+                            <td id="totalGames">-</td>
+                        </tr>
+                        <tr>
+                            <td>Побед</td>
+                            <td id="totalWins">-</td>
+                        </tr>
+                        <tr>
+                            <td>Ничьих</td>
+                            <td id="totalDraws">-</td>
+                        </tr>
+                        <tr>
+                            <td>Поражений</td>
+                            <td id="totalLosses">-</td>
+                        </tr>
+                        <tr>
+                            <td>Базовых карт в коллекции</td>
+                            <td id="basicInCollection">-</td>
+                        </tr>
+                        <tr>
+                            <td>Сильных карт в коллекции</td>
+                            <td id="strongInCollection">-</td>
+                        </tr>
+                        <tr>
+                            <td>Эпических карт в коллекции</td>
+                            <td id="epicInCollection">-</td>
+                        </tr>
+                        <tr>
+                            <td>Редких карт в коллекции</td>
+                            <td id="rareInCollection">-</td>
+                        </tr>
+                        <tr>
+                            <td>Средний заработок монет в день</td>
+                            <td id="avgCoinsPerDay">-</td>
+                        </tr>
+                        <tr>
+                            <td>Среднее получение карт в день</td>
+                            <td id="avgCardsPerDay">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Статистика по множественным запускам -->
+            <div class="multi-sim-stats" id="multiSimStats" style="display: none;">
+                <h3>📈 Статистика по 100 запускам</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="avgDaysToCollect">-</div>
+                        <div class="metric-label">Ср. дней до 30 карт</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value" id="minDaysToCollect">-</div>
+                        <div class="metric-label">Мин. дней</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value" id="maxDaysToCollect">-</div>
+                        <div class="metric-label">Макс. дней</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value" id="successRate">-</div>
+                        <div class="metric-label">% успели за 30 дней</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
